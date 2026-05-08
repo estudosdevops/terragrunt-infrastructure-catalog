@@ -11,7 +11,7 @@ include "root" {
 }
 
 terraform {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-s3-bucket.git?ref=v4.2.1"
+  source = "tfr:///terraform-aws-modules/s3-bucket/aws?version=4.2.1"
 }
 
 inputs = {
