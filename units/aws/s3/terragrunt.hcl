@@ -6,29 +6,24 @@
 # Os inputs chegam via values do terragrunt.stack.hcl do live.
 # -----------------------------------------------------------------------------
 
-locals {
-  # Lê os values injetados pelo unit {} do terragrunt.stack.hcl
-  vals = values.all
-}
-
 terraform {
-  source = "tfr:///terraform-aws-modules/s3-bucket/aws?version=4.2.1"
+   source = "tfr:///terraform-aws-modules/s3-bucket/aws?version=4.2.1"
 }
 
 inputs = {
-  bucket        = local.vals.name
-  force_destroy = local.vals.force_destroy
+  bucket        = values.name
+  force_destroy = values.force_destroy
 
   versioning = {
-    enabled = local.vals.versioning
+    enabled = values.versioning
   }
 
-  lifecycle_rule = try(local.vals.expire_noncurrent_days, 0) > 0 ? [
+  lifecycle_rule = try(values.expire_noncurrent_days, 0) > 0 ? [
     {
       id      = "expire-noncurrent-versions"
       enabled = true
       noncurrent_version_expiration = {
-        noncurrent_days = local.vals.expire_noncurrent_days
+        noncurrent_days = values.expire_noncurrent_days
       }
     }
   ] : []
